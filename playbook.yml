@@ -1,0 +1,81 @@
+- name: This sets up an Apache  webserver
+  hosts: all
+  become: yes
+  tasks:
+  - name: Install Java
+    apt:
+      name: openjdk-11-jre
+      state: present
+
+  - name: Install Python
+    apt:
+      name: python3
+      state: present
+
+  - name: Install apache packages
+    apt:
+      name: apache2
+      state: present
+
+  - name: ensure apache2 is running
+    service:
+      name: apache2
+      state: started
+
+#  - name: Open port 80 for http access
+ #   firewalld:
+  #    service: apache2
+   #   permanent: true
+    #  state: enabled
+
+  - name: install lamp stack
+    apt:
+           pkg:
+             - php
+             - php-mysql
+             - php-curl
+             - php-json
+             - php-cgi
+             - php-xsl
+             - php-cgi
+             - php-gd
+             - php-mbstring
+             - php-zip
+             - php-xmlrpc
+             - php-soap
+             - php-intl
+           state: present
+           update_cache: yes
+
+  - name: Install mysql
+    ansible.builtin.apt:
+      name: "mysql-server"
+      state: "latest"
+      update_cache: true
+
+  - name: Pymysql
+    ansible.builtin.apt:
+      name: python3-pymysql
+      state: latest
+      update_cache: true
+
+  - name: "Set up root"
+    community.mysql.mysql_user:
+        name: "root"
+        password: "password1"
+        login_user: "root"
+        login_password: "password1"
+        check_implicit_admin: true
+        login_unix_socket: "/var/run/mysqld/mysqld.sock"   
+        
+
+  - name: "Remove anonimous users"
+    community.mysql.mysql_user:
+       name: ""
+       state: "absent"
+       login_user: "root"
+       login_password: "password1"
+
+  - name: "Add a new db"
+    mysql_db: name=bloodbank state=present login_user=root login_password="password1"
+
