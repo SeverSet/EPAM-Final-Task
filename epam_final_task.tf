@@ -9,6 +9,15 @@ resource "aws_instance" "server" {
   key_name = "EPAM-Task"
 }
 
+data "aws_eip" "my_instance_eip" {
+  public_ip = "35.157.89.13"
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.server.id
+  allocation_id = data.aws_eip.my_instance_eip.id
+}
+
 resource "aws_security_group" "server_SG" {
   egress {
     cidr_blocks = ["0.0.0.0/0", ]
@@ -40,3 +49,4 @@ resource "aws_security_group" "server_SG" {
     cidr_blocks = ["0.0.0.0/0", ]
   }
 }
+
