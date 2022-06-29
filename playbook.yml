@@ -13,9 +13,7 @@
       state: present
 
   - name: Install apache packages
-    apt:
-      name: apache2
-      state: present
+    apt: name=apache2 update_cache=yes state=latest
 
   - name: ensure apache2 is running
     service:
