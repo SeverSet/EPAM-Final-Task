@@ -43,4 +43,4 @@
 #db-[99:101]-node.example.com
 
 [server]
-35.157.89.13  ansible_user=ubuntu
+3.74.197.60  ansible_user=ubuntu
